@@ -14,26 +14,7 @@ export const searchDatabase = async (message) => {
   // SMART CATEGORY DETECTION
   // =========================
 
-  if (query.includes("dinner") || query.includes("night")) {
-    restaurantFilter.category = {
-      $in: ["Biryani", "North Indian", "Chinese"],
-    };
-  } else if (query.includes("lunch")) {
-    restaurantFilter.category = {
-      $in: ["North Indian", "Healthy", "Biryani"],
-    };
-  } else if (query.includes("breakfast")) {
-    restaurantFilter.category = {
-      $in: ["Cafe", "Healthy"],
-    };
-  } else if (
-    query.includes("hungry") ||
-    query.includes("starving") ||
-    query.includes("recommend") ||
-    query.includes("suggest")
-  ) {
-    // No category filter
-  } else if (query.includes("pizza")) {
+  if (query.includes("pizza")) {
     restaurantFilter.category = /pizza/i;
     dishFilter.category = /pizza/i;
   } else if (query.includes("burger")) {
@@ -71,6 +52,23 @@ export const searchDatabase = async (message) => {
     dishFilter.category = /cafe/i;
   }
 
+  // Meal preference (only if no specific category was selected)
+  if (!restaurantFilter.category) {
+    if (query.includes("dinner") || query.includes("night")) {
+      restaurantFilter.category = {
+        $in: [/biryani/i, /north indian/i, /chinese/i],
+      };
+    } else if (query.includes("lunch")) {
+      restaurantFilter.category = {
+        $in: [/north indian/i, /healthy/i, /biryani/i],
+      };
+    } else if (query.includes("breakfast")) {
+      restaurantFilter.category = {
+        $in: [/cafe/i, /healthy/i],
+      };
+    }
+  }
+
   // =========================
   // VEG / NON VEG
   // =========================
@@ -105,14 +103,19 @@ export const searchDatabase = async (message) => {
 
   const priceMatch = query.match(/(\d+)/);
 
+  let maxPrice = null;
+
   if (
     priceMatch &&
     (query.includes("under") ||
       query.includes("below") ||
       query.includes("less than"))
   ) {
+    maxPrice = Number(priceMatch[1]);
+
+    // Dish Budget Filter
     dishFilter.price = {
-      $lte: Number(priceMatch[1]),
+      $lte: maxPrice,
     };
   }
 
@@ -120,9 +123,25 @@ export const searchDatabase = async (message) => {
   // FETCH RESTAURANTS
   // =========================
 
-  restaurants = await Restaurant.find(restaurantFilter)
-    .sort({ rating: -1 })
-    .limit(5);
+  restaurants = await Restaurant.find(restaurantFilter);
+
+  // Restaurant Budget Ranking
+  if (maxPrice) {
+    restaurants = restaurants.sort((a, b) => {
+      const aDiff = Math.abs(a.priceForTwo - maxPrice);
+      const bDiff = Math.abs(b.priceForTwo - maxPrice);
+
+      if (aDiff !== bDiff) {
+        return aDiff - bDiff;
+      }
+
+      return b.rating - a.rating;
+    });
+  } else {
+    restaurants = restaurants.sort((a, b) => b.rating - a.rating);
+  }
+
+  restaurants = restaurants.slice(0, 5);
 
   // =========================
   // FETCH DISHES

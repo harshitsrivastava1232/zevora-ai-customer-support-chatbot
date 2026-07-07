@@ -1,4 +1,17 @@
 const cities = ["Greater Noida", "Noida", "Delhi", "Ghaziabad"];
+const restaurantRatings = [4.9, 4.8, 4.7, 4.6, 4.5];
+
+const restaurantDeliveryTimes = [
+  "24 min",
+  "27 min",
+  "30 min",
+  "33 min",
+  "36 min",
+];
+
+const restaurantPriceForTwo = [299, 399, 499, 599, 699];
+
+const dishRatings = [4.9, 4.8, 4.7, 4.6, 4.5];
 
 const restaurantTemplates = [
   {
@@ -159,9 +172,11 @@ restaurantTemplates.forEach((template) => {
       name: restaurantName,
       city,
       category: template.category,
-      rating: Number((4.2 + Math.random() * 0.7).toFixed(1)),
-      deliveryTime: `${20 + Math.floor(Math.random() * 21)} min`,
-      priceForTwo: 300 + restaurantIndex * 100,
+      rating: restaurantRatings[restaurantIndex],
+
+      deliveryTime: restaurantDeliveryTimes[restaurantIndex],
+
+      priceForTwo: restaurantPriceForTwo[restaurantIndex],
       isVeg: template.isVeg,
       image: "",
     };
@@ -174,7 +189,7 @@ restaurantTemplates.forEach((template) => {
         restaurant: restaurantName,
         category: template.category,
         price: 99 + dishIndex * 50 + restaurantIndex * 10,
-        rating: Number((4.2 + Math.random() * 0.7).toFixed(1)),
+        rating: dishRatings[dishIndex],
         isVeg:
           !dishName.toLowerCase().includes("chicken") &&
           !dishName.toLowerCase().includes("mutton"),

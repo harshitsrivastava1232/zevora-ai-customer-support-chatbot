@@ -29,6 +29,63 @@ export const chatWithAI = async (req, res) => {
 
     // Previous Conversation
     const history = getConversation(sessionId);
+    // ==========================================
+    // Detect New Topic vs Follow-up
+    // ==========================================
+
+    const lowerMessage = message.toLowerCase();
+
+    const newTopicKeywords = [
+      "pizza",
+      "burger",
+      "biryani",
+      "healthy",
+      "diet",
+      "dessert",
+      "sweet",
+      "chinese",
+      "noodles",
+      "fried rice",
+      "manchurian",
+      "restaurant",
+      "cafe",
+      "coffee",
+      "breakfast",
+      "lunch",
+      "dinner",
+      "salad",
+      "sandwich",
+      "protein",
+      "chicken",
+      "veg",
+      "vegetarian",
+      "non veg",
+      "non-veg",
+    ];
+
+    const followUpKeywords = [
+      "under",
+      "below",
+      "less than",
+      "only",
+      "best",
+      "top",
+      "why",
+      "which",
+      "this",
+      "that",
+      "it",
+      "price",
+      "rating",
+    ];
+
+    const isNewTopic = newTopicKeywords.some((word) =>
+      lowerMessage.includes(word),
+    );
+
+    const isFollowUp = followUpKeywords.some((word) =>
+      lowerMessage.includes(word),
+    );
 
     // Detect Intent
     const intent = detectIntent(message);
@@ -69,10 +126,24 @@ export const chatWithAI = async (req, res) => {
     // =============================
     // Food Recommendation
     // =============================
+    // Build Smart Search Query using Conversation History
 
+    // ==========================================
+    // Smart Search Query
+    // ==========================================
+
+    let searchQuery = message;
+
+    if (isFollowUp && !isNewTopic) {
+      const previousUserMessages = history
+        .filter((chat) => chat.sender === "user")
+        .slice(-5)
+        .map((chat) => chat.message);
+
+      searchQuery = [...previousUserMessages, message].join(" ");
+    }
     if (intent === "food") {
-      const { restaurants, dishes } = await searchDatabase(message);
-
+      const { restaurants, dishes } = await searchDatabase(searchQuery);
       // -----------------------------
       // Direct Database Response
       // -----------------------------
