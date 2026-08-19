@@ -2,7 +2,7 @@ import Restaurant from "../models/Restaurant.js";
 import Dish from "../models/Dish.js";
 
 export const searchDatabase = async (message) => {
-  const query = message.toLowerCase();
+  const query = message.toLowerCase().trim();
 
   let restaurants = [];
   let dishes = [];
@@ -37,7 +37,10 @@ export const searchDatabase = async (message) => {
   ) {
     restaurantFilter.category = /chinese/i;
     dishFilter.category = /chinese/i;
-  } else if (query.includes("indian") || query.includes("north indian")) {
+  } else if (
+    query.includes("indian") ||
+    query.includes("north indian")
+  ) {
     restaurantFilter.category = /indian/i;
     dishFilter.category = /indian/i;
   } else if (query.includes("biryani")) {
@@ -52,7 +55,12 @@ export const searchDatabase = async (message) => {
     dishFilter.category = /cafe/i;
   }
 
-  // Meal preference (only if no specific category was selected)
+  // =========================
+  // MEAL PREFERENCE
+  // =========================
+
+  // Only apply meal-based categories when
+  // no specific food category was detected.
   if (!restaurantFilter.category) {
     if (query.includes("dinner") || query.includes("night")) {
       restaurantFilter.category = {
@@ -73,12 +81,18 @@ export const searchDatabase = async (message) => {
   // VEG / NON VEG
   // =========================
 
-  if (query.includes("veg") || query.includes("vegetarian")) {
+  if (
+    query.includes("veg") ||
+    query.includes("vegetarian")
+  ) {
     restaurantFilter.isVeg = true;
     dishFilter.isVeg = true;
   }
 
-  if (query.includes("non veg") || query.includes("non-veg")) {
+  if (
+    query.includes("non veg") ||
+    query.includes("non-veg")
+  ) {
     restaurantFilter.isVeg = false;
     dishFilter.isVeg = false;
   }
@@ -98,7 +112,7 @@ export const searchDatabase = async (message) => {
   }
 
   // =========================
-  // PRICE
+  // PRICE / BUDGET
   // =========================
 
   const priceMatch = query.match(/(\d+)/);
@@ -107,13 +121,15 @@ export const searchDatabase = async (message) => {
 
   if (
     priceMatch &&
-    (query.includes("under") ||
+    (
+      query.includes("under") ||
       query.includes("below") ||
-      query.includes("less than"))
+      query.includes("less than")
+    )
   ) {
     maxPrice = Number(priceMatch[1]);
 
-    // Dish Budget Filter
+    // Dish budget filter
     dishFilter.price = {
       $lte: maxPrice,
     };
@@ -125,22 +141,43 @@ export const searchDatabase = async (message) => {
 
   restaurants = await Restaurant.find(restaurantFilter);
 
-  // Restaurant Budget Ranking
-  if (maxPrice) {
-    restaurants = restaurants.sort((a, b) => {
-      const aDiff = Math.abs(a.priceForTwo - maxPrice);
-      const bDiff = Math.abs(b.priceForTwo - maxPrice);
+  // =========================
+  // APPLY RESTAURANT BUDGET
+  // =========================
 
-      if (aDiff !== bDiff) {
-        return aDiff - bDiff;
+  if (maxPrice !== null) {
+    restaurants = restaurants.filter(
+      (restaurant) =>
+        Number(restaurant.priceForTwo) <= maxPrice,
+    );
+
+    // First prioritize rating,
+    // then lower delivery time.
+    restaurants.sort((a, b) => {
+      if (b.rating !== a.rating) {
+        return b.rating - a.rating;
       }
 
-      return b.rating - a.rating;
+      const aTime = parseInt(a.deliveryTime) || Infinity;
+      const bTime = parseInt(b.deliveryTime) || Infinity;
+
+      return aTime - bTime;
     });
   } else {
-    restaurants = restaurants.sort((a, b) => b.rating - a.rating);
+    // Normal recommendation ranking
+    restaurants.sort((a, b) => {
+      if (b.rating !== a.rating) {
+        return b.rating - a.rating;
+      }
+
+      const aTime = parseInt(a.deliveryTime) || Infinity;
+      const bTime = parseInt(b.deliveryTime) || Infinity;
+
+      return aTime - bTime;
+    });
   }
 
+  // Keep maximum five restaurants.
   restaurants = restaurants.slice(0, 5);
 
   // =========================
@@ -148,7 +185,9 @@ export const searchDatabase = async (message) => {
   // =========================
 
   if (restaurants.length) {
-    const restaurantNames = restaurants.map((r) => r.name);
+    const restaurantNames = restaurants.map(
+      (restaurant) => restaurant.name,
+    );
 
     dishes = await Dish.find({
       ...dishFilter,
@@ -156,11 +195,17 @@ export const searchDatabase = async (message) => {
         $in: restaurantNames,
       },
     })
-      .sort({ rating: -1 })
+      .sort({ rating: -1, price: 1 })
       .limit(10);
   } else {
-    dishes = await Dish.find(dishFilter).sort({ rating: -1 }).limit(10);
+    dishes = await Dish.find(dishFilter)
+      .sort({ rating: -1, price: 1 })
+      .limit(10);
   }
+
+  // =========================
+  // FINAL RETURN
+  // =========================
 
   return {
     restaurants,

@@ -3,9 +3,8 @@ import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { Bot, Send, X } from "lucide-react";
 
-function ChatWindow({ onClose }) {
+function ChatWindow({ onClose, initialMessage = "" }) {
   const [message, setMessage] = useState("");
-
   const [loading, setLoading] = useState(false);
 
   const [sessionId, setSessionId] = useState(
@@ -21,6 +20,7 @@ function ChatWindow({ onClose }) {
 
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
+  const initialMessageSentRef = useRef(false);
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -32,10 +32,10 @@ function ChatWindow({ onClose }) {
     });
   }, [messages]);
 
-  const sendMessage = async () => {
-    if (!message.trim() || loading) return;
+  const sendMessage = async (messageToSend = message) => {
+    const userMessage = messageToSend.trim();
 
-    const userMessage = message;
+    if (!userMessage || loading) return;
 
     setMessages((prev) => [
       ...prev,
@@ -46,7 +46,6 @@ function ChatWindow({ onClose }) {
     ]);
 
     setMessage("");
-
     setLoading(true);
 
     try {
@@ -90,10 +89,25 @@ function ChatWindow({ onClose }) {
     }
   };
 
+  // Automatically send a query when the chatbot is opened
+  // from the website search section.
+  useEffect(() => {
+    if (!initialMessage || initialMessageSentRef.current) {
+      return;
+    }
+
+    initialMessageSentRef.current = true;
+
+    const timer = setTimeout(() => {
+      sendMessage(initialMessage);
+    }, 250);
+
+    return () => clearTimeout(timer);
+  }, [initialMessage]);
+
   return (
     <div className="fixed bottom-6 right-6 z-50 flex h-180 w-95 flex-col overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-2xl">
       {/* Header */}
-
       <div className="flex items-center justify-between bg-orange-500 px-6 py-5 text-white">
         <div className="flex items-center gap-3">
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white text-orange-500">
@@ -102,12 +116,12 @@ function ChatWindow({ onClose }) {
 
           <div>
             <h3 className="font-bold">Zeva AI</h3>
-
             <p className="text-sm text-orange-100">Online</p>
           </div>
         </div>
 
         <button
+          type="button"
           onClick={onClose}
           className="rounded-full p-2 transition hover:bg-orange-600"
         >
@@ -116,7 +130,6 @@ function ChatWindow({ onClose }) {
       </div>
 
       {/* Messages */}
-
       <div className="flex-1 overflow-y-auto bg-gray-50 p-6">
         <div className="space-y-4">
           {messages.map((msg, index) => (
@@ -145,20 +158,20 @@ function ChatWindow({ onClose }) {
               <div className="rounded-2xl rounded-bl-sm bg-white px-4 py-3 shadow">
                 <div className="animate-pulse text-sm text-gray-500">
                   <div className="flex items-center gap-2">
-                    <span className="text-sm text-gray-500">
-                      Zeva AI is typing
-                    </span>
+                    <span>Zeva AI is typing</span>
 
                     <div className="flex gap-1">
-                      <span className="h-2 w-2 animate-bounce rounded-full bg-orange-400"></span>
+                      <span className="h-2 w-2 animate-bounce rounded-full bg-orange-400" />
+
                       <span
                         className="h-2 w-2 animate-bounce rounded-full bg-orange-400"
                         style={{ animationDelay: "0.2s" }}
-                      ></span>
+                      />
+
                       <span
                         className="h-2 w-2 animate-bounce rounded-full bg-orange-400"
                         style={{ animationDelay: "0.4s" }}
-                      ></span>
+                      />
                     </div>
                   </div>
                 </div>
@@ -166,12 +179,11 @@ function ChatWindow({ onClose }) {
             </div>
           )}
 
-          <div ref={messagesEndRef}></div>
+          <div ref={messagesEndRef} />
         </div>
       </div>
 
       {/* Quick Actions */}
-
       <div className="flex flex-wrap gap-2 border-t bg-white px-4 py-3">
         {[
           "🍔 Recommend a Burger",
@@ -183,6 +195,7 @@ function ChatWindow({ onClose }) {
         ].map((item) => (
           <button
             key={item}
+            type="button"
             disabled={loading}
             onClick={() => {
               const text = item.replace(/^[^\s]+\s/, "");
@@ -201,7 +214,6 @@ function ChatWindow({ onClose }) {
       </div>
 
       {/* Input */}
-
       <div className="border-t bg-white p-4">
         <div className="flex items-center gap-3 rounded-2xl border border-gray-300 px-4 py-3 shadow-sm">
           <input
@@ -221,7 +233,8 @@ function ChatWindow({ onClose }) {
           />
 
           <button
-            onClick={sendMessage}
+            type="button"
+            onClick={() => sendMessage()}
             disabled={loading}
             className="rounded-full bg-orange-500 p-3 text-white transition-all duration-300 hover:scale-110 hover:bg-orange-600 disabled:cursor-not-allowed disabled:bg-orange-300"
           >

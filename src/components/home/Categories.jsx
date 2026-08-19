@@ -1,11 +1,11 @@
-import { Pizza, Beef, IceCreamBowl, Soup } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 function Categories() {
   const categories = [
     {
       title: "Pizza",
       items: "120+ Items",
-      icon: <Pizza size={40} className="text-orange-500" />,
+      image: "/images/dish-margherita.png",
     },
     {
       title: "Chicken",
@@ -20,60 +20,83 @@ function Categories() {
     {
       title: "Burger",
       items: "70+ Items",
-      icon: <Beef size={40} className="text-orange-500" />,
+      image: "/images/dish-burger.png",
     },
     {
       title: "Desserts",
       items: "60+ Items",
-      icon: <IceCreamBowl size={40} className="text-orange-500" />,
+      image: "/images/dish-dessert.png",
     },
     {
-      title: "Soups",
-      items: "45+ Items",
-      icon: <Soup size={40} className="text-orange-500" />,
-    },
+  title: "Soups",
+  items: "45+ Items",
+  image: "/images/category-soups.png",
+},
   ];
 
   return (
     <section id="categories" className="bg-white py-24">
       <div className="mx-auto max-w-7xl px-6">
+        {/* Header */}
         <div className="text-center">
-          <h2 className="text-4xl font-bold text-gray-900">
+          <span className="inline-flex rounded-full bg-orange-100 px-4 py-2 text-sm font-semibold text-orange-600">
+            🍴 Explore More
+          </span>
+
+          <h2 className="mt-4 text-4xl font-bold text-gray-900 md:text-5xl">
             Browse Categories
           </h2>
 
-          <p className="mt-4 text-lg text-gray-500">
-            Explore your favourite cuisines.
+          <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-500">
+            Explore your favourite cuisines and discover something delicious.
           </p>
         </div>
 
+        {/* Category Cards */}
         <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {categories.map((category) => (
-            <div
+            <article
               key={category.title}
-              className="group rounded-3xl border border-gray-100 bg-white p-8 shadow-sm transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl hover:border-orange-200"
+              className="group overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-sm transition-all duration-500 hover:-translate-y-2 hover:border-orange-200 hover:shadow-2xl"
             >
-              <div className="flex justify-center">
+              {/* Image / Icon */}
+              <div className="relative flex h-56 items-center justify-center overflow-hidden bg-orange-50">
                 {category.image ? (
                   <img
                     src={category.image}
-                    alt={category.title}
-                    className="h-24 w-24 rounded-full object-cover transition duration-500 group-hover:scale-110"
+                    alt={`${category.title} food`}
+                    className="h-full w-full object-cover transition duration-700 group-hover:scale-110"
                   />
                 ) : (
-                  <div className="transition duration-500 group-hover:scale-125">
+                  <div className="flex h-24 w-24 items-center justify-center rounded-full bg-white shadow-md transition duration-500 group-hover:scale-110">
                     {category.icon}
                   </div>
                 )}
+
+                <div className="absolute left-4 top-4 rounded-full bg-white/95 px-3 py-1 text-sm font-semibold text-gray-900 shadow-md">
+                  Popular
+                </div>
               </div>
 
-              <h3 className="mt-6 text-center text-2xl font-bold transition group-hover:text-orange-500">
-                {" "}
-                {category.title}
-              </h3>
+              {/* Content */}
+              <div className="p-6">
+                <div className="flex items-center justify-between gap-4">
+                  <div>
+                    <h3 className="text-2xl font-bold text-gray-900 transition-colors duration-300 group-hover:text-orange-500">
+                      {category.title}
+                    </h3>
 
-              <p className="mt-2 text-center text-gray-500">{category.items}</p>
-            </div>
+                    <p className="mt-2 text-gray-500">
+                      {category.items}
+                    </p>
+                  </div>
+
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-orange-50 text-orange-500 transition-all duration-300 group-hover:bg-orange-500 group-hover:text-white">
+                    <ArrowRight size={18} />
+                  </div>
+                </div>
+              </div>
+            </article>
           ))}
         </div>
       </div>

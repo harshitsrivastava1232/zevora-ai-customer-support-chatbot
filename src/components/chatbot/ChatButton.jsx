@@ -1,8 +1,22 @@
+import { useEffect } from "react";
 import { Bot } from "lucide-react";
 
 function ChatButton({ onClick }) {
+  useEffect(() => {
+    const handleOpenChat = () => {
+      onClick();
+    };
+
+    window.addEventListener("open-zeva-chat", handleOpenChat);
+
+    return () => {
+      window.removeEventListener("open-zeva-chat", handleOpenChat);
+    };
+  }, [onClick]);
+
   return (
     <button
+      type="button"
       onClick={onClick}
       className="fixed bottom-6 right-6 z-50 flex items-center gap-3 rounded-full bg-orange-500 px-5 py-4 text-white shadow-2xl transition-all duration-300 hover:scale-105 hover:bg-orange-600"
     >
