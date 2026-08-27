@@ -258,18 +258,27 @@ GEMINI_API_KEY
 Sensitive credentials are stored through environment variables and are not
 included in the source repository.
 
-📸 Screenshots
+## 📸 Screenshots
 
-Screenshots of the application will be added here, including:
+### 🏠 Homepage
 
-Homepage
-Hero section
-Browse Categories
-Featured Restaurants
-Popular Dishes
-Zeva AI Assistant
-Smart Search
-Mobile responsive interface
+![Zevora Homepage](./public/screenshots/homepage.png)
+
+### 🍽️ Browse Categories
+
+![Browse Categories](./public/screenshots/categories.png)
+
+### 🏪 Featured Restaurants
+
+![Featured Restaurants](./public/screenshots/restaurants.png)
+
+### 🤖 Zeva AI Assistant
+
+![Zeva AI Assistant](./public/screenshots/ai-assistant.png)
+
+### 💬 AI Chatbot
+
+![Zevora AI Chatbot](./public/screenshots/chatbot.png)
 
 💡 Example Queries
 Best burger
