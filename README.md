@@ -69,10 +69,11 @@ Restaurants in Greater Noida
 Only veg pizza
 Suggest spicy chicken
 High protein food
-
 ```
+
 The assistant can also handle follow-up conversations such as:
 
+```text
 User: Pizza
 
 User: Under ₹300
@@ -80,37 +81,52 @@ User: Under ₹300
 User: Which one is the best?
 
 User: Why?
+```
 
 This allows users to interact with the system conversationally instead of
 having to provide all requirements in a single query.
 
+---
+
 ## 🛠️ Tech Stack
 
 ### Frontend
- -React.js
- -Vite
- -JavaScript
- -Tailwind CSS
- -Axios
- -React Markdown
- -Lucide React
+
+- React.js
+- Vite
+- JavaScript
+- Tailwind CSS
+- Axios
+- React Markdown
+- Lucide React
+
 ### Backend
- -Node.js
- -Express.js
- -JavaScript
- -REST APIs
+
+- Node.js
+- Express.js
+- JavaScript
+- REST APIs
+
 ### Database
- -MongoDB
- -MongoDB Atlas
+
+- MongoDB
+- MongoDB Atlas
+
 ### AI
- -Google Gemini API
+
+- Google Gemini API
+
 ### Deployment & Version Control
- -Vercel – Frontend deployment
- -Render – Backend deployment
- -GitHub – Source control and automatic deployment
+
+- Vercel – Frontend deployment
+- Render – Backend deployment
+- GitHub – Source control and automatic deployment
+
+---
 
 ## 🏗️ System Architecture
 
+```text
                          ┌───────────────────────┐
                          │         User          │
                          │   Desktop / Mobile    │
@@ -137,9 +153,13 @@ having to provide all requirements in a single query.
           │ Restaurants / Dishes │           │ Conversational AI    │
           │ FAQ / Application    │           │ AI Responses         │
           └──────────────────────┘           └──────────────────────┘
-          
+```
+
+---
+
 ## 📂 Project Structure
 
+```text
 zevora-ai-customer-support-chatbot/
 │
 ├── backend/
@@ -149,7 +169,6 @@ zevora-ai-customer-support-chatbot/
 │   ├── routes/
 │   ├── seed/
 │   ├── services/
-│   ├── .env
 │   ├── package.json
 │   └── server.js
 │
@@ -169,111 +188,175 @@ zevora-ai-customer-support-chatbot/
 │   ├── index.css
 │   └── main.jsx
 │
-├── .env
 ├── .gitignore
 ├── index.html
 ├── package.json
 ├── vite.config.js
 └── README.md
+```
+
+> Environment files such as `.env` are intentionally excluded from the
+> repository for security.
+
+---
 
 ## 🔌 API
 
-Chat API
+### Chat API
+
+```http
 POST /api/chat
+```
 
 Example request:
 
+```json
 {
   "message": "pizza under 300"
 }
+```
 
 The API uses a session identifier to maintain conversational context.
 
+---
+
 ## ⚙️ Local Setup
-1. Clone the repository
+
+### 1. Clone the repository
+
+```bash
 git clone https://github.com/harshitsrivastava1232/zevora-ai-customer-support-chatbot.git
 cd zevora-ai-customer-support-chatbot
-2. Install frontend dependencies
+```
+
+### 2. Install frontend dependencies
+
+```bash
 npm install
-3. Install backend dependencies
+```
+
+### 3. Install backend dependencies
+
+```bash
 cd backend
 npm install
 cd ..
-4. Configure environment variables
+```
 
-Create a .env file in the project root:
+### 4. Configure environment variables
 
+Create a `.env` file in the project root:
+
+```env
 VITE_API_URL=http://localhost:5000
+```
 
-Create another .env file inside the backend folder:
+Create another `.env` file inside the `backend` folder:
 
+```env
 PORT=5000
 MONGODB_URI=your_mongodb_atlas_connection_string
 GEMINI_API_KEY=your_gemini_api_key
+```
 
-Never commit .env files, API keys, database credentials, or other
-sensitive values to GitHub.
+> Never commit `.env` files, API keys, database credentials, or other
+> sensitive values to GitHub.
 
-5. Start the backend
+### 5. Start the backend
 
 Open a terminal and run:
 
+```bash
 cd backend
 npm run dev
+```
 
-The backend runs on:
+The backend normally runs on:
 
+```text
 http://localhost:5000
-6. Start the frontend
+```
+
+### 6. Start the frontend
 
 Open another terminal from the project root:
 
+```bash
 npm run dev
+```
 
 The frontend normally runs on:
 
+```text
 http://localhost:5173
+```
+
+---
 
 ## 🌐 Live Deployment
 
-Frontend
+### Frontend
 
 https://zevora-ai-customer-support-chatbot.vercel.app/
 
-Backend
+### Backend
 
 https://zevora-ai-customer-support-chatbot.onrender.com
 
-Database
+### Database
 
 MongoDB Atlas
 
+---
+
 ## 🔐 Environment Variables
 
-Frontend
+### Frontend
+
+```text
 VITE_API_URL
-Backend
+```
+
+### Backend
+
+```text
 PORT
 MONGODB_URI
 GEMINI_API_KEY
+```
 
 Sensitive credentials are stored through environment variables and are not
 included in the source repository.
 
+---
+
 ## 📸 Screenshots
 
-🏠 Homepage
+### 🏠 Homepage
 
-🍽️ Browse Categories
+![Zevora Homepage](./public/screenshots/homepage.png)
 
-🏪 Featured Restaurants
+### 🍽️ Browse Categories
 
-🤖 Zeva AI Assistant
+![Browse Categories](./public/screenshots/categories.png)
 
-💬 AI Chatbot
+### 🏪 Featured Restaurants
+
+![Featured Restaurants](./public/screenshots/restaurants.png)
+
+### 🤖 Zeva AI Assistant
+
+![Zeva AI Assistant](./public/screenshots/ai-assistant.png)
+
+### 💬 AI Chatbot
+
+![Zevora AI Chatbot](./public/screenshots/chatbot.png)
+
+---
 
 ## 💡 Example Queries
 
+```text
 Best burger
 Pizza under ₹300
 Healthy dinner
@@ -282,6 +365,9 @@ Only veg pizza
 High protein food
 Track my order
 Latest offers
+```
+
+---
 
 ## 🎯 Project Goals
 
@@ -290,37 +376,43 @@ integrated into a modern full-stack food ordering platform.
 
 The project focuses on:
 
-Intelligent food discovery
-Personalized recommendations
-Natural-language search
-Conversational customer support
-Cloud-based full-stack deployment
-AI-assisted user experience
+- Intelligent food discovery
+- Personalized recommendations
+- Natural-language search
+- Conversational customer support
+- Cloud-based full-stack deployment
+- AI-assisted user experience
+
+---
 
 ## 🔮 Future Improvements
 
-User authentication and profiles
-Restaurant detail pages
-Functional cart and checkout
-Real order management
-Real-time order tracking
-Persistent cloud conversation history
-Advanced recommendation ranking
-Payment gateway integration
-Admin dashboard
-Custom domain
+- User authentication and profiles
+- Restaurant detail pages
+- Functional cart and checkout
+- Real order management
+- Real-time order tracking
+- Persistent cloud conversation history
+- Advanced recommendation ranking
+- Payment gateway integration
+- Admin dashboard
+- Custom domain
+
+---
 
 ## 👨‍💻 Author
 
-Harshit Srivastava
+**Harshit Srivastava**
 
 B.Tech Computer Science Engineering
 
-GitHub:
+**GitHub:**  
 https://github.com/harshitsrivastava1232
 
-LinkedIn:
+**LinkedIn:**  
 https://www.linkedin.com/in/harshit-srivastava123
+
+---
 
 ## 📄 License
 
