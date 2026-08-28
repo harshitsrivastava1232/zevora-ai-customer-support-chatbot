@@ -70,48 +70,47 @@ Only veg pizza
 Suggest spicy chicken
 High protein food
 
+```
 The assistant can also handle follow-up conversations such as:
 
 User: Pizza
 
-
 User: Under ₹300
 
-
 User: Which one is the best?
-
 
 User: Why?
 
 This allows users to interact with the system conversationally instead of
 having to provide all requirements in a single query.
 
-🛠️ Tech Stack
+## 🛠️ Tech Stack
 
-Frontend
-React.js
-Vite
-JavaScript
-Tailwind CSS
-Axios
-React Markdown
-Lucide React
-Backend
-Node.js
-Express.js
-JavaScript
-REST APIs
-Database
-MongoDB
-MongoDB Atlas
-AI
-Google Gemini API
-Deployment & Version Control
-Vercel – Frontend deployment
-Render – Backend deployment
-GitHub – Source control and automatic deployment
+### Frontend
+ -React.js
+ -Vite
+ -JavaScript
+ -Tailwind CSS
+ -Axios
+ -React Markdown
+ -Lucide React
+### Backend
+ -Node.js
+ -Express.js
+ -JavaScript
+ -REST APIs
+### Database
+ -MongoDB
+ -MongoDB Atlas
+### AI
+ -Google Gemini API
+### Deployment & Version Control
+ -Vercel – Frontend deployment
+ -Render – Backend deployment
+ -GitHub – Source control and automatic deployment
 
-🏗️ System Architecture
+## 🏗️ System Architecture
+
                          ┌───────────────────────┐
                          │         User          │
                          │   Desktop / Mobile    │
@@ -138,7 +137,8 @@ GitHub – Source control and automatic deployment
           │ Restaurants / Dishes │           │ Conversational AI    │
           │ FAQ / Application    │           │ AI Responses         │
           └──────────────────────┘           └──────────────────────┘
-📂 Project Structure
+          
+## 📂 Project Structure
 
 zevora-ai-customer-support-chatbot/
 │
@@ -155,6 +155,7 @@ zevora-ai-customer-support-chatbot/
 │
 ├── public/
 │   ├── images/
+│   ├── screenshots/
 │   └── ...
 │
 ├── src/
@@ -174,7 +175,9 @@ zevora-ai-customer-support-chatbot/
 ├── package.json
 ├── vite.config.js
 └── README.md
-🔌 API
+
+## 🔌 API
+
 Chat API
 POST /api/chat
 
@@ -186,8 +189,7 @@ Example request:
 
 The API uses a session identifier to maintain conversational context.
 
-⚙️ Local Setup
-
+## ⚙️ Local Setup
 1. Clone the repository
 git clone https://github.com/harshitsrivastava1232/zevora-ai-customer-support-chatbot.git
 cd zevora-ai-customer-support-chatbot
@@ -232,7 +234,7 @@ The frontend normally runs on:
 
 http://localhost:5173
 
-🌐 Live Deployment
+## 🌐 Live Deployment
 
 Frontend
 
@@ -246,7 +248,7 @@ Database
 
 MongoDB Atlas
 
-🔐 Environment Variables
+## 🔐 Environment Variables
 
 Frontend
 VITE_API_URL
@@ -260,27 +262,18 @@ included in the source repository.
 
 ## 📸 Screenshots
 
-### 🏠 Homepage
+🏠 Homepage
 
-![Zevora Homepage](./public/screenshots/homepage.png)
+🍽️ Browse Categories
 
-### 🍽️ Browse Categories
+🏪 Featured Restaurants
 
-![Browse Categories](./public/screenshots/categories.png)
+🤖 Zeva AI Assistant
 
-### 🏪 Featured Restaurants
+💬 AI Chatbot
 
-![Featured Restaurants](./public/screenshots/restaurants.png)
+## 💡 Example Queries
 
-### 🤖 Zeva AI Assistant
-
-![Zeva AI Assistant](./public/screenshots/ai-assistant.png)
-
-### 💬 AI Chatbot
-
-![Zevora AI Chatbot](./public/screenshots/chatbot.png)
-
-💡 Example Queries
 Best burger
 Pizza under ₹300
 Healthy dinner
@@ -290,7 +283,7 @@ High protein food
 Track my order
 Latest offers
 
-🎯 Project Goals
+## 🎯 Project Goals
 
 Zevora AI was developed to demonstrate how conversational AI can be
 integrated into a modern full-stack food ordering platform.
@@ -304,7 +297,8 @@ Conversational customer support
 Cloud-based full-stack deployment
 AI-assisted user experience
 
-🔮 Future Improvements
+## 🔮 Future Improvements
+
 User authentication and profiles
 Restaurant detail pages
 Functional cart and checkout
@@ -316,7 +310,7 @@ Payment gateway integration
 Admin dashboard
 Custom domain
 
-👨‍💻 Author
+## 👨‍💻 Author
 
 Harshit Srivastava
 
@@ -328,7 +322,7 @@ https://github.com/harshitsrivastava1232
 LinkedIn:
 https://www.linkedin.com/in/harshit-srivastava123
 
-📄 License
+## 📄 License
 
 This project is intended for educational, portfolio, and demonstration
 purposes.
